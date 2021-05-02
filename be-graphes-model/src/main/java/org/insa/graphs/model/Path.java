@@ -34,8 +34,30 @@ public class Path {
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
+    	Arc currentArc=null;
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+        double time=999999;
+        
+        if (nodes.size()==0) {
+        	return new Path(graph);
+        }
+        if (nodes.size() == 1) {
+        	return new Path(graph, nodes.get(0));
+        }
+        for(int i=0; i<nodes.size()-1;i++) {
+        	for(Arc a : nodes.get(i).getSuccessors()) {
+                if(a.getMinimumTravelTime() < time && a.getDestination().equals(nodes.get(i+1))  ) {
+                    currentArc = a;
+                    time = a.getLength();
+                }
+            }
+            if(currentArc == null) {
+                throw new IllegalArgumentException();
+            }    
+            arcs.add(currentArc);
+            time = 9999;
+            currentArc = null;
+        }
         return new Path(graph, arcs);
     }
 
@@ -55,10 +77,38 @@ public class Path {
      */
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
+        
+        
+        Arc currentArc = null;
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+        double lenght = 999999;
+        
+        if(nodes.size() == 0) {
+            return new Path(graph);
+        }
+        if(nodes.size() == 1) {
+            return new Path(graph, nodes.get(0) );
+        }
+        
+        for(int i=0; i<nodes.size()-1;i++) {
+            for(Arc a : nodes.get(i).getSuccessors()) {
+                if(a.getLength() < lenght && a.getDestination().equals(nodes.get(i+1))  ) {
+                    currentArc = a;
+                    lenght = a.getLength();
+                }
+            }
+            if(currentArc == null) {
+                throw new IllegalArgumentException();
+            }    
+            arcs.add(currentArc);
+            lenght = 9999;
+            currentArc = null;
+        }
+          
         return new Path(graph, arcs);
-    }
+    	
+        
+     }
 
     /**
      * Concatenate the given paths.
@@ -201,7 +251,23 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
+    	if (this.isEmpty()) {
+    		return true;
+    	}
+    	if (this.getArcs().size() == 0) {
+    		return true;
+    	}
+    	if (this.origin == this.getArcs().get(0).getOrigin()) {
+    		{
+    			for(int i=0; i< this.getArcs().size() -1 ; i++) {
+    				if (this.getArcs().get(i).getDestination() != this.getArcs().get(i+1).getOrigin()) {
+    					return false;
+    				}
+    			}
+    			return true;
+    		}
+    	}
+    		
         return false;
     }
 
@@ -213,8 +279,14 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+    	List<Arc> list = this.getArcs();
+        float somme=0;
+        for (int i=0; i< list.size(); i++) {
+        	Arc arc = list.get(i);
+        	somme += arc.getLength();
+        }
+        return somme;
+        
     }
 
     /**
@@ -228,8 +300,14 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
+    	 List<Arc> list = this.getArcs();
+         float temps=0;
+         for (int i=0; i< list.size(); i++) {
+         	Arc arc = list.get(i);
+         	temps += arc.getTravelTime(speed);
+         }
+     	return temps;
+        
     }
 
     /**
@@ -241,8 +319,14 @@ public class Path {
      * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+    	List<Arc> list = this.getArcs();
+        float temps=0;
+        for (int i=0; i< list.size(); i++) {
+        	Arc arc = list.get(i);
+        	temps += arc.getMinimumTravelTime();
+        }
+    	return temps;
+        
     }
 
 }
