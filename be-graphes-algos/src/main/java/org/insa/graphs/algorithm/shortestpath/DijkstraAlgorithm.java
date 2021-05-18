@@ -11,17 +11,19 @@ import org.insa.graphs.algorithm.AbstractSolution.Status;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
 import org.insa.graphs.algorithm.utils.PriorityQueue;
 
-
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
+
 	
+	// TEST VARIABLE
 	public ArrayList<Double> cout_ancien = new ArrayList<>();  
 	double cost;
 	boolean tas_err = true;
 	
+	
     public DijkstraAlgorithm(ShortestPathData data) {
         super(data);
     }
-
+    
     public label[] initTab(int nbNode, Node base) {
     	label[] res=  new label[nbNode];
     	res[base.getId()] = new label(0,base,null);
@@ -29,16 +31,19 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     	
     }
     
+    
     public label createLabel(double cout, Node dest, Arc cur) {
     	return new label(cout, dest, cur);
     }
-    
-    
+
     @Override
-    protected ShortestPathSolution doRun() {
+	public ShortestPathSolution doRun() {
+    	 // Retrieve the graph.
         final ShortestPathData data = getInputData();
-        ShortestPathSolution solution = null;
         Graph graph = data.getGraph();
+        ShortestPathSolution solution = null;
+        
+        // constant
         final int nbNode = graph.size();
         Node base = data.getOrigin();
         PriorityQueue<label>labheap = new BinaryHeap<>();
@@ -85,7 +90,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         				after.ActualiseCost(cur.getCost() + data.getCost(arc));
         				after.ActualisePapa(arc);
         				labheap.remove(after);
-        				labheap.insert(after); // actualise la position dans le tas
+        				labheap.insert(after); // actualise la position dans le tas 
         				
         				
         			}
@@ -110,11 +115,15 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	Collections.reverse(solution_arcs);
             notifyDestinationReached(data.getDestination());
         	Path newPath = new Path(graph, solution_arcs);
-        	solution = new ShortestPathSolution(data, Status.OPTIMAL ,newPath, cout_ancien, cost, tas_err);
+        	solution = new ShortestPathSolution(data, Status.OPTIMAL,newPath);
    
         
         }
         
+        
+       
+        
+
         return solution;
     }
 

@@ -163,7 +163,24 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     		throw new ElementNotFoundException(x);
     	}
     }
-
+    public boolean isValid() {
+    	boolean is_ok = true;
+    	for (int i = 0; i < this.currentSize && is_ok; i++) {
+    		if (this.indexLeft(i) <= this.currentSize) {
+    			if (this.array.get(this.indexLeft(i)).compareTo(this.array.get(i)) == -1) {
+    				is_ok = false;
+    			}
+    			else {
+    				if (this.indexLeft(i) + 1 < this.currentSize) {
+    					if (this.array.get(this.indexLeft(i) + 1).compareTo(this.array.get(i)) == -1) {
+    	    				is_ok = false;
+    	    			}
+    				}
+    			}
+    		}
+    	}
+    	return is_ok;
+    }
     @Override
     public E findMin() throws EmptyPriorityQueueException {
         if (isEmpty())

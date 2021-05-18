@@ -23,6 +23,10 @@ public class BinarySearchTree<E extends Comparable<E>> implements PriorityQueue<
     public BinarySearchTree(BinarySearchTree<E> bst) {
         this.sortedSet = new TreeSet<>(bst.sortedSet);
     }
+    
+    public boolean isValid() {
+    	return true;
+    }
 
     @Override
     public boolean isEmpty() {
