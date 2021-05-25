@@ -3,13 +3,18 @@ package org.insa.graphs.algorithm.shortestpath;
 import org.insa.graphs.algorithm.AbstractInputData.Mode;
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Path;
+
+import java.util.ArrayList;
+
 import org.insa.graphs.algorithm.AbstractSolution;
 
 public class ShortestPathSolution extends AbstractSolution {
 
     // Optimal solution.
     private final Path path;
-
+    ArrayList<Double> cout_ancien = new ArrayList<>(); 
+    double cost;
+    boolean tas_err;
     /**
      * Create a new infeasible shortest-path solution for the given input and
      * status.
@@ -20,6 +25,7 @@ public class ShortestPathSolution extends AbstractSolution {
     public ShortestPathSolution(ShortestPathData data, Status status) {
         super(data, status);
         this.path = null;
+        
     }
 
     /**
@@ -32,6 +38,26 @@ public class ShortestPathSolution extends AbstractSolution {
     public ShortestPathSolution(ShortestPathData data, Status status, Path path) {
         super(data, status);
         this.path = path;
+    }
+    
+    public ShortestPathSolution(ShortestPathData data, Status status, Path path, ArrayList<Double> cout_ancien, double cost, boolean tas_err) {
+        super(data, status);
+        this.path = path;
+        this.cout_ancien = cout_ancien;
+        this.cost = cost;
+        this.tas_err = tas_err;
+        
+    }
+    
+    public ArrayList<Double> get_old_cout() {
+    	return this.cout_ancien;
+    }
+    public double getDestCout() {
+    	return this.cost;
+    }
+    
+    public boolean isHeapValid() {
+    	return this.tas_err;
     }
 
     @Override

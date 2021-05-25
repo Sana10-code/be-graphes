@@ -57,7 +57,8 @@ public class BinarySearchTree<E extends Comparable<E>> implements PriorityQueue<
         }
         return sortedSet.first();
     }
-
+    
+   
     @Override
     public E deleteMin() throws EmptyPriorityQueueException {
         E min = findMin();
